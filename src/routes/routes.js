@@ -1,6 +1,9 @@
 import { getArticles, postArticles, getArticlesId, putArticles, deleteArticles } from '../controllers/controller.js';
 import express from 'express';
 
+
+
+
 const Router = express.Router();
 
 Router.get('/articles', getArticles);

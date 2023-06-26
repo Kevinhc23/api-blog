@@ -1,6 +1,6 @@
 import express from "express";
 import { Article } from "../database/squema.js";
-import { uploadImage, deleteImage } from "../database/cloudinary.js";
+import { uploadImage, deleteImage, updateImage } from "../database/cloudinary.js";
 
 
 const Router = express.Router();
@@ -58,10 +58,25 @@ export const getArticlesId = Router.get("/articles/:id", async (req, res) => {
 });
 
 // Actualizar un artículo por su ID
-export const putArticles =Router.put("/articles/:id", async (req, res) => {
+export const putArticles = Router.put("/articles/:id", async (req, res) => {
   try {
     const { title, content, author } = req.body;
-    const article = await Article.findByIdAndUpdate(
+
+    // Verifica si se ha enviado una imagen
+    let article = await Article.findById(req.params.id);
+    if (req.files?.image) {
+      if (article?.image?.public_id) {
+        await updateImage(article.image.public_id, req.files.image.tempFilePath);
+      } else {
+        const result = await uploadImage(req.files.image.tempFilePath);
+        article.image = {
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+        };
+      }
+    }
+
+    article = await Article.findByIdAndUpdate(
       req.params.id,
       { title, content, author },
       { new: true }
@@ -78,7 +93,7 @@ export const putArticles =Router.put("/articles/:id", async (req, res) => {
 
 
 
-
+//delete articles by id
 export const deleteArticles = Router.delete("/articles/:id", async (req, res) => {
   try {
     const article = await Article.findByIdAndDelete(req.params.id);
@@ -98,18 +113,3 @@ export const deleteArticles = Router.delete("/articles/:id", async (req, res) =>
 
 
 
-/*
-// Eliminar un artículo por su ID
-export const deleteArticles = Router.delete("/articles/:id", async (req, res) => {
-  try {
-    const article = await Article.findByIdAndDelete(req.params.id);
-    if (article) {
-      res.json({ message: "Artículo eliminado correctamente" });
-    } else {
-      res.status(404).json({ error: "Artículo no encontrado" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el artículo" });
-  }
-});
-*/

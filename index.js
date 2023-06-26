@@ -5,6 +5,7 @@ import Router from './src/routes/routes.js';
 import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
+
 connect();
 
 const app = express();
@@ -21,6 +22,8 @@ app.use(fileUpload({
 
 app.use(morgan('dev'));
 app.use('/api', Router);
+
+
 
 app.listen(3000, () => {
     console.log('Servidor ejecutándose en el puerto 3000');
