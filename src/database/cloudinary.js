@@ -21,3 +21,11 @@ export async function uploadImage(filePath) {
         });
     }
 
+
+// Elimina una imagen de Cloudinary
+export async function deleteImage(public_id) {
+    return await cloudinary.uploader.destroy(public_id);
+    }
+
+    
+

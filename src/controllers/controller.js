@@ -1,6 +1,6 @@
 import express from "express";
 import { Article } from "../database/squema.js";
-import { uploadImage } from "../database/cloudinary.js";
+import { uploadImage, deleteImage } from "../database/cloudinary.js";
 
 
 const Router = express.Router();
@@ -42,28 +42,6 @@ export const postArticles = Router.post('/articles', async (req, res) => {
 
 
 
-/*
-// Crear un nuevo artículo
-export const postArticles = Router.post('/articles', async (req, res) => {
-  try {
-    const { title, content, author, imageUrl } = req.body;
-    console.log(req.files);
-
-    const article = new Article({ title, content, author, imageUrl });
-    await article.save();
-    res.status(201).json(article);
-  } catch (error) {
-    res.status(500).json({ error: "Error al crear el artículo" });
-  }
-});
-
-
-
-*/
-
-
-
-
 
 // Obtener un artículo por su ID
 export const getArticlesId = Router.get("/articles/:id", async (req, res) => {
@@ -98,6 +76,29 @@ export const putArticles =Router.put("/articles/:id", async (req, res) => {
   }
 });
 
+
+
+
+export const deleteArticles = Router.delete("/articles/:id", async (req, res) => {
+  try {
+    const article = await Article.findByIdAndDelete(req.params.id);
+    if (article?.image?.public_id) {
+      await deleteImage(article.image.public_id);
+    }
+
+    if (article) {
+      res.json({ message: "Artículo eliminado correctamente" });
+    } else {
+      res.status(404).json({ error: "Artículo no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar el artículo" });
+  }
+});
+
+
+
+/*
 // Eliminar un artículo por su ID
 export const deleteArticles = Router.delete("/articles/:id", async (req, res) => {
   try {
@@ -111,5 +112,4 @@ export const deleteArticles = Router.delete("/articles/:id", async (req, res) =>
     res.status(500).json({ error: "Error al eliminar el artículo" });
   }
 });
-
-
+*/
