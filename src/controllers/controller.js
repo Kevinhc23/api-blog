@@ -1,5 +1,6 @@
 import express from "express";
 import { Article } from "../database/squema.js";
+import { uploadImage } from "../database/cloudinary.js";
 
 
 const Router = express.Router();
@@ -14,10 +15,40 @@ export const getArticles = Router.get("/articles", async (req, res) => {
   }
 });
 
+
+
+export const postArticles = Router.post('/articles', async (req, res) => {
+  try {
+    const { title, content, author } = req.body;
+    // Verifica si se ha enviado una imagen
+    const article = new Article({ title, content, author });
+
+    if (req.files?.image) {
+       const result = await uploadImage(req.files.image.tempFilePath);
+       article.image = {
+          public_id: result.public_id,
+          secure_url: result.secure_url,
+       }
+    }
+
+    // Crea el artículo con la URL de la imagen
+    
+    await article.save();
+    res.status(201).json(article);
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el artículo" });
+  }
+});
+
+
+
+/*
 // Crear un nuevo artículo
 export const postArticles = Router.post('/articles', async (req, res) => {
   try {
     const { title, content, author, imageUrl } = req.body;
+    console.log(req.files);
+
     const article = new Article({ title, content, author, imageUrl });
     await article.save();
     res.status(201).json(article);
@@ -25,6 +56,14 @@ export const postArticles = Router.post('/articles', async (req, res) => {
     res.status(500).json({ error: "Error al crear el artículo" });
   }
 });
+
+
+
+*/
+
+
+
+
 
 // Obtener un artículo por su ID
 export const getArticlesId = Router.get("/articles/:id", async (req, res) => {
