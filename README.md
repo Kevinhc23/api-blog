@@ -26,6 +26,18 @@ Para ejecutar el proyecto en modo produccion ejecutar el siguiente comando:
 npm run start
 ```
 
+### Variables de entorno
+
+Para poder hacer uso de la api se debe crear un archivo .env en la raiz del proyecto y agregar las siguientes variables de entorno:
+
+```bash
+CLOUDINARY_CLOUD_NAME (cloudinary://cloud_name)
+CLOUDINARY_API_KEY (cloudinary://api_key)
+CLOUDINARY_API_SECRET (cloudinary://api_secret)
+MONGO_URI (mongodb://localhost:27017/db_name)
+```
+
+
 ## Uso
 
 Para poder hacer uso de la api se debe hacer uso de un cliente http como postman o insomnia, y hacer uso de los siguientes endpoints:
