@@ -15,10 +15,10 @@ export const getArticles = Router.get("/articles", async (req, res) => {
 });
 
 // Crear un nuevo artículo
-export const postArticles = Router.post("/articles", async (req, res) => {
+export const postArticles = Router.post('/articles', async (req, res) => {
   try {
-    const { title, content, author } = req.body;
-    const article = new Article({ title, content, author });
+    const { title, content, author, imageUrl } = req.body;
+    const article = new Article({ title, content, author, imageUrl });
     await article.save();
     res.status(201).json(article);
   } catch (error) {

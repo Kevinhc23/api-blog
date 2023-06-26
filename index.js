@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json()); // Middleware para analizar el cuerpo de las solicitudes como JSON
 app.use(express.urlencoded({ extended: true })); // Middleware para analizar los cuerpos de las solicitudes codificados en URL
 app.use(cors());
+
 app.use(morgan('dev'));
 app.use('/api', Router);
 
