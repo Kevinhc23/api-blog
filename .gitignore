@@ -4,6 +4,4 @@ node_modules
 # Ignora la variables de entorno
 .env
 
-# Ignora la carpeta de compilación
-dist
 

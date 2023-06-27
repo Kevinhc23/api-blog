@@ -23,16 +23,27 @@ const articleSchema = new Schema({
     public_id: { type: String },
     secure_url: { type: String },
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now().toLocaleString('en-US', { timeZone: 'America/Bogota' }) },
+  updatedAt: { type: Date, default: Date.now().toLocaleString('en-US', { timeZone: 'America/Bogota' }) },
 });
+
+
+//Definición del esquema para los usuarios
+const userSchema = new Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique:true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now().toLocaleString('en-US', { timeZone: 'America/Bogota' })  },
+  updatedAt: { type: Date, default: Date.now().toLocaleString('en-US', { timeZone: 'America/Bogota' }) },
+});
+
 
 // Definición del esquema para los comentarios de los artículos
 const commentSchema = new Schema({
   articleId: { type: Schema.Types.ObjectId, ref: "Article", required: true },
   content: { type: String, required: true },
   author: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now().toLocaleString('en-US', { timeZone: 'America/Bogota' }) },
 });
 
 // Definición del esquema para la colección de artículos
@@ -40,3 +51,6 @@ export const Article = mongoose.model("Article", articleSchema);
 
 // Definición del esquema para la colección de comentarios
 export const Comment = mongoose.model("Comment", commentSchema);
+
+// Definición del esquema para la colección de usuarios
+export const User = mongoose.model("User", userSchema);

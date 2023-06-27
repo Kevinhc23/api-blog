@@ -1,16 +1,26 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Api para la gestion de blogs, con la cual se puede crear, editar, eliminar y listar blogs, ademas de poder subir imagenes a cloudinary y guardar la url en la base de datos.",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start": "npm install && node index.js"
+    "start": "npm install && npm install pm2 -g && pm2 start index.js --name api && pm2 monit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "api",
+    "express",
+    "node",
+    "mongoose",
+    "cloudinary",
+    "cors",
+    "dotenv",
+    "express-fileupload",
+    "morgan"
+  ],
+  "author": "Kevin Hernandez Crespo",
   "license": "ISC",
   "dependencies": {
     "cloudinary": "^1.37.2",
